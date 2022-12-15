@@ -1,0 +1,362 @@
+#include <iostream>
+#include <string>
+#define TRUE 1     //assigning True value 1 for display menu
+#define SIZE 70   // maximum strength of students that can be added
+using namespace std;
+struct Date {
+	unsigned int month, year, day;
+
+};
+struct Student {
+	int stNum;
+	string stName;
+	string stFName;
+	float stCGPA;
+	Date doa, dob;
+};
+//Date structure
+
+void addData();
+int searchData(int);//For adding Data
+void displayData();      // getting value for displaying data
+int searchData(int);
+void updateRecord(int); //getting value for updating record
+void deleteData(int);
+void appendData();
+
+
+Student stu[SIZE];      //array for students
+Date doa[SIZE], dob[SIZE];
+
+int totalCount = 0;  // for number of students to add
+
+int main()
+{
+
+
+	int
+		pos,// for checking status search
+		searchKey,  //for entering roll no for search
+		updateKey,  //for updation
+		deleteKey;  //For deletion
+	char choice;// To enter choice 
+	do {
+		cout << "                                          WELCOME TO STUDENT PORTAL                  " << endl;
+		cout << "                                          Enter Your Choice                   " << endl;
+		cout << "                        ================= Press 1 to Add Data =================" << endl;
+		cout << "                        ================= Press 2 to Search Data =================" << endl;
+		cout << "                        ================= Press 3 to Display Data =================" << endl;
+		cout << "                        ================= Press 4 to Update Data =================" << endl;
+		cout << "                        ================= Press 5 to delete Data =================" << endl;
+		cout << "                        ================= Press 6 to append data program =================" << endl;
+		cout << "                        ================= Press 7 to exit =================" << endl;
+
+
+
+		cin >> choice;
+		switch (choice)
+
+		{
+			//creating data base and adding
+		case '1':
+
+
+
+			while (TRUE)
+			{
+				cout << " Enter number of students to add  :";
+				cin >> totalCount;
+				if (totalCount > 0 && totalCount <= 70)
+				{
+					
+					addData();
+					break;
+				}
+			}
+
+			break;
+		case '2': //search function
+			cout << " Enter the Roll No of student you wanna search :";
+			cin >> searchKey;
+			searchData(searchKey);
+
+			break;
+		case '3': //display function
+		
+			displayData();
+			break;
+		case '4':
+			cout << " Enter Roll No you wanna Update :" << endl;
+			cin >> updateKey;
+			updateRecord(updateKey); //update function
+			break;
+		case '5':
+			cout << " Enter roll No to delete :";
+			cin >> deleteKey;
+			deleteData(deleteKey);  //delete function
+			break;
+		case '6':
+			appendData();
+			totalCount++;
+			break;
+		case '8':
+			exit(-1);  //exit back
+
+			break;
+		}
+	} while (TRUE);
+
+
+
+}
+void addData() {
+
+
+
+	for (int i = 0; i < totalCount; i++)
+	{
+		cout << " Information of student " << i + 1 << " is :" << endl;
+		cout << " Enter student's Number :";
+		cin >> stu[i].stNum;
+		cout << " Enter student's name :";
+		cin.ignore();
+		getline(cin, stu[i].stName);
+		cout << " Enter Father's name :";
+		//cin.ignore();
+		getline(cin, stu[i].stFName);
+		cout << " Enter student's CGPA :";
+		cin >> stu[i].stCGPA;
+		cout << " Enter student's Date Of Birth :";
+		while (TRUE)
+		{
+			cout << " Enter Day :";
+			cin >> dob[i].day;
+			if (dob[i].day <= 31)
+			{
+				cout << " Enter month :";
+
+				cin >> dob[i].month;
+				if (dob[i].month <= 12)
+				{
+					cout << " Enter year :";
+
+					cin >> dob[i].year;
+					if (dob[i].year <= 2022)
+					{
+						cout << " Date Of birth Saved! " << endl;
+						break;
+					}
+				}
+			}
+
+		}
+		cout << " Enter date of admission :" << endl;
+		while (TRUE)
+		{
+			cout << " Enter Day :";
+			cin >> doa[i].day;
+			if (doa[i].day <= 31)
+			{
+				cout << " Enter month :";
+				cin >> doa[i].month;
+				if (doa[i].month <= 12)
+				{
+					cout << " Enter year :";
+					cin >> doa[i].year;
+					if (doa[i].year <= 2022)
+					{
+						cout << " Date Of birth Saved! " << endl;
+						break;
+					}
+				}
+			}
+		}
+		cout << "*****************************************************************" << endl;
+	}
+}
+void displayData()
+{
+
+
+
+	for (int i = 0; i < totalCount; i++)
+	{
+		//cout << "\t" << stu[i].stName << "\t" << stu[i].stFName << "\t" << stu[i].stCGPA << "\t " << dob[i].day << "/" << dob[i].month << "/" << dob[i].year << "\t" << doa[i].day << "/" << doa[i].month << "/" << doa[i].year << "|" << endl;
+
+		cout << " Name is :" << stu[i].stName << endl;
+		cout << " Father name  is :" << stu[i].stFName << endl;
+		cout << " CGPA is  :" << stu[i].stCGPA << endl;
+		cout << " Date of birth is  :" << dob[i].day << "/" << dob[i].month << "/" << dob[i].year << endl;
+		cout << " Date of admission is  :" << doa[i].day << "/" << doa[i].month << "/" << doa[i].year << endl;
+	}
+	
+
+}
+int searchData(int searchKey)
+{
+	int location = -1;
+	for (int i = 0; i < totalCount; i++)
+	{
+		if (searchKey == stu[i].stNum)
+		{
+			location = i;
+			cout << " Data is at Position " << i + 1 << endl;
+
+		}
+	}
+	if (location == -1)
+	{
+		cout << " Not found " << endl;
+	}
+
+	return location;
+}
+void updateRecord(int updateKey)
+{
+	int index;
+	index = searchData(updateKey);
+	if (index > 0)
+	{
+		
+
+			cout << " Enter student's Number :";
+			cin >> stu[index].stNum;
+			cout << " Enter student's name :";
+			cin >> stu[index].stFName;
+			cout << " Enter Father's name :";
+			cin >> stu[index].stFName;
+			cout << " Enter student's CGPA :";
+			cin >> stu[index].stCGPA;
+			while (TRUE)
+			{
+				cout << " Enter student's Date Of Birth :";
+				cout << " Enter Day :";
+				cin >> dob[index].day;
+				if (dob[index].day <= 31)
+				{
+					cout << " Enter month :";
+
+					cin >> dob[index].month;
+					if (dob[index].month <= 12)
+					{
+						cout << " Enter year :";
+
+						cin >> dob[index].year;
+						if (dob[index].year <= 2022)
+						{
+							cout << " Date Of birth Saved! " << endl;
+							break;
+						}
+					}
+				}
+			}
+
+			while(TRUE)
+			{
+				cout << " Enter date of admission :" << endl;
+			cout << " Enter Day :";
+			cin >> doa[index].day;
+			if (doa[index].day <= 31)
+			{
+				cout << " Enter month :";
+				cin >> doa[index].month;
+				if (doa[index].month <= 12)
+				{
+					cout << " Enter year :";
+					cin >> doa[index].year;
+					if (doa[index].year <= 2022)
+					{
+						cout << " Date Of birth Saved! " << endl;
+						break;
+					}
+				}
+			}
+
+		}
+	}
+
+}
+void deleteData(int deleteKey)
+{
+	int indexD;
+
+	indexD = searchData(deleteKey);
+	if (indexD > 0)
+	{
+		for (int k = indexD; k < totalCount - 1; k++)
+		{
+			stu[k] = stu[k + 1];
+		}
+		totalCount--;
+
+		cout << "Record deleted successfully!" << endl;
+	}
+
+
+}
+void appendData()
+{
+	for (int i = totalCount; i < totalCount + 1; i++)
+	{
+		cout << " Information of student " << i + 1 << " is :" << endl;
+		cout << " Enter student's Number :";
+		cin >> stu[i].stNum;
+		cout << " Enter student's name :";
+		cin.ignore();
+		getline(cin, stu[i].stName);
+		cout << " Enter Father's name :";
+		cin.ignore();
+		getline(cin, stu[i].stFName);
+		cout << " Enter student's CGPA :";
+		cin >> stu[i].stCGPA;
+		cout << " Enter student's Date Of Birth :";
+		while (TRUE)
+		{
+			cout << " Enter Day :";
+			cin >> dob[i].day;
+			if (dob[i].day <= 31)
+			{
+				cout << " Enter month :";
+
+				cin >> dob[i].month;
+				if (dob[i].month <= 12)
+				{
+					cout << " Enter year :";
+
+					cin >> dob[i].year;
+					if (dob[i].year <= 2022)
+					{
+						cout << " Date Of birth Saved! " << endl;
+						break;
+					}
+				}
+			}
+
+		}
+		cout << " Enter date of admission :" << endl;
+		while (TRUE)
+		{
+			cout << " Enter Day :";
+			cin >> doa[i].day;
+			if (doa[i].day <= 31)
+			{
+				cout << " Enter month :";
+				cin >> doa[i].month;
+				if (doa[i].month <= 12)
+				{
+					cout << " Enter year :";
+					cin >> doa[i].year;
+					if (doa[i].year <= 2022)
+					{
+						cout << " Date Of birth Saved! " << endl;
+
+						break;
+					}
+				}
+			}
+		}
+		cout << "*****************************************************************" << endl;
+	}
+
+
+}

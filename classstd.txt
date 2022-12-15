@@ -1,0 +1,344 @@
+
+//This program will save and process the data of student...
+#include <iostream>
+#include <string>
+using namespace std;
+#define TRUE 1
+#define SIZE 70
+//Structure for date 
+struct Date {
+	unsigned int day, month, year;
+};
+//Student's class
+class Student {
+private:
+	int stNum;
+	string stName;
+	float stCGPA;
+	string stFName;
+
+
+	Date doa, dob; //date of birth and admission
+
+
+public:
+	//constructor to initialize integer data
+	Student(int n1 = 0, float n2 = 0) :stNum(n1), stCGPA(n2) {}
+	//member functions decleration
+	void addData();
+	void displayData();
+	bool searchData(int);
+	void updateData(int);
+
+
+
+
+};
+
+void updateD(int, int, Student stu[SIZE]);
+void deleteD(int&, int, Student stu[SIZE]);
+void appendData(int, Student stu[SIZE]);
+
+int main() {
+
+	int totalCount = 0, searchKey, updateKey, deleteKey; //variables for getting inputs from user
+	int found, pos = -1;
+	//n for loop right most value
+	char choice;         //id,key,and del for input for deletion,updating and search & choice for entering choice
+	Student stu[SIZE];
+	do {
+		cout << "                                  WELCOME TO STUDENT PORTAL                  " << endl;
+		cout << "                                          Enter Your Choice                   " << endl;
+		cout << "                        ================= Press a to create data base =================" << endl;
+		cout << "                        ================= Press s to Search Data =================" << endl;
+		cout << "                        ================= Press d to Display Data =================" << endl;
+		cout << "                        ================= Press u to Update Data =================" << endl;
+		cout << "                        ================= Press x to delete Data =================" << endl;
+		cout << "                        ================= Press e to Exit program =================" << endl;
+		cout << "                        ================= Press p to append Data =================" << endl;
+
+		cout << " Enter you Choice :";
+		cin >> choice;
+		switch (choice)
+		{
+		case 'a':
+		case 'A':
+			
+			do
+			{
+				cout << "Enter number of students:";
+				cin >> totalCount;
+				for (int i = 0; i < totalCount; i++)
+				{		
+					cout << " Information of student " << i + 1 << " :" << endl;
+					stu[i].addData();   //add function
+				}
+			} while (!((totalCount > 0) && (totalCount <= SIZE)));
+			break;
+		case 'd':
+		case 'D':
+
+			for (int i = 0; i < totalCount; i++)
+			{
+				cout << "Details of student " << i + 1 << " :" << endl;
+				stu[i].displayData();  //display data
+			}
+			break;
+		case 's':
+		case 'S':
+			cout << " Enter RollNo you wanna search ";
+			cin >> searchKey;
+
+			for (int i = 0; i < totalCount; i++)
+			{
+				found = stu[i].searchData(searchKey);  //search data
+				if (found)
+				{
+					pos = i;
+					break;
+				}
+			}
+			if (pos == -1)
+			{
+				cout << " not found " << endl;
+			}
+			else
+				cout << " found at position " << pos + 1 << endl;
+			break;
+		case 'u':
+		case 'U':
+			cout << " Enter Roll no you wanna update :";
+			cin >> updateKey;
+			updateD(totalCount, updateKey, stu);
+
+			break;
+		case 'p':
+		case 'P':
+
+
+			appendData(totalCount, stu);
+			totalCount++;
+
+			//appendData(totalCount, stu);
+			break;
+		case 'x':
+		case 'X':
+			cout << " Enter the RollNo you wanna delete :";
+			cin >> deleteKey;
+			deleteD(totalCount, deleteKey, stu);
+			break;
+		}
+	} while (1);
+}
+//add data function
+void Student::addData() {
+
+
+
+	cout << " Enter student's Roll Number :";
+	cin >> stNum;
+	cout << "Enter name of student:";
+	cin.ignore();
+	getline(cin, stName);
+	cout << " Enter Father's name :";
+	getline(cin, stFName);
+	
+	while (TRUE)
+	{
+		cout << " Enter student's CGPA :";
+		cin >> stCGPA;
+		if (stCGPA >= 0 && stCGPA <= 4)
+		{
+			break;
+		}
+	}
+	
+
+	cout << " Enter student's Date Of Birth :";
+	while (TRUE)
+	{
+		cout << " Enter Day :";
+		cin >> dob.day;
+		if (dob.day <= 31)
+		{
+			cout << " Enter month :";
+			cin >> dob.month;
+			if (dob.month <= 12)
+			{
+				cout << " Enter year :";
+				cin >> dob.year;
+				if (dob.year <= 2022)
+				{
+					cout << " Date Of birth Saved! " << endl;
+					break;
+				}
+			}
+		}
+	}
+	
+	while (TRUE)
+	{
+		cout << " Enter student's Date Of Admission :" << endl;
+		cout << " Enter Day :";
+		cin >> doa.day;
+		if (doa.day <= 31)
+		{
+			cout << " Enter month :";
+			cin >> doa.month;
+			if (doa.month <= 12)
+			{
+				cout << " Enter year :";
+				cin >> doa.year;
+				if (doa.year <= 2022)
+				{
+					cout << " Date Of birth Saved! " << endl;
+					break;
+				}
+			}
+		}
+	}
+	
+}
+//display function definition
+void Student::displayData() {
+	cout << "\t\ \t\ name \t\ \t\ Father name \t\ \t\ Roll No \t\ \t\ CGPA \t\ \t\DOB \t\ \t\DOA" << endl;
+	cout << "Fathers name   : " << stName << endl;
+	cout << "Fathers name  : " << stFName << endl;
+	cout << " Roll Number is :" << stNum << endl;
+	cout << " CGPA is :" << stCGPA << endl;
+	cout << " Date of birth is  :" << dob.day << "/" << dob.month << "/" << dob.year << endl;
+	cout << " Date of admission is   :" << doa.day << "/" << doa.month << "/" << doa.year << endl;
+	cout << "=======================================================" << endl;
+
+}
+bool Student::searchData(int id)
+{
+	if (stNum == id)
+	{
+		return true;
+	}
+	else
+		return false;
+}
+//update data function
+void Student::updateData(int)
+{     //Since  i don't wanna update reg no so i have included the member finction for update 
+
+	cout << "Enter name of student:";
+	cin.ignore();
+	getline(cin, stName);
+	cout << " Enter Father's name :";
+	getline(cin, stFName);
+	cout << " Enter student's CGPA :";
+	cin >> stCGPA;
+	cout << " Enter student's Date Of Birth :";
+	while (TRUE)
+	{
+		cout << " Enter Day :";
+		cin >> dob.day;
+		if (dob.day <= 31)
+		{
+			cout << " Enter month :";
+
+			cin >> dob.month;
+			if (dob.month <= 12)
+			{
+				cout << " Enter year :";
+
+				cin >> dob.year;
+				if (dob.year <= 2022)
+				{
+					cout << " Date Of birth Saved! " << endl;
+					break;
+				}
+			}
+		}
+	}
+	cout << " Enter student's Date Of Admission :";
+	while (TRUE)
+	{
+		cout << " Enter Day :";
+		cin >> doa.day;
+		if (doa.day <= 31)
+		{
+			cout << " Enter month :";
+
+			cin >> doa.month;
+			if (doa.month <= 12)
+			{
+				cout << " Enter year :";
+
+				cin >> doa.year;
+				if (doa.year <= 2022)
+				{
+					cout << " Date Of birth Saved! " << endl;
+					break;
+				}
+			}
+		}
+	}
+	
+}
+//for upsating data
+void updateD(int totalCount, int key, Student stu[SIZE])
+{
+	int index1 = -1, find;
+
+	for (int i = 0; i < totalCount; i++)
+	{
+
+		find = stu[i].searchData(key);
+		if (find)
+		{
+			index1 = i;
+			stu[index1].updateData(index1);
+		}
+	}
+	if (index1 == -1)
+	{
+		cout << " No data at this reg!" << endl;
+
+	}
+	
+}
+//for deleting data
+void deleteD(int& totalCount, int del, Student stu[SIZE])
+{
+	int index = -1, got;
+
+	for (int i = 0; i < totalCount; i++)
+	{
+		got = stu[i].searchData(del);                 //delete
+
+		if (got)
+		{
+			index = i;
+			for (int j = index; j < totalCount - 1; j++)
+				stu[j] = stu[j + 1];
+		}
+		
+
+
+	}
+	totalCount--;
+	if (index == -1)
+	{
+		cout << " Your ID is not found!" << endl;
+	}
+	else
+	{
+		cout << " Data has been successfully deleted !" << endl;
+	}
+	
+}
+//for appending data
+void appendData(int totalCount, Student stu[SIZE])
+{
+	for (int i = totalCount; i < totalCount + 1; i++)
+	{
+		stu[i].addData();
+	}
+	
+
+}
+

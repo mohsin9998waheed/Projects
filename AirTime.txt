@@ -1,0 +1,351 @@
+//This program will deal with flight schedule
+#include <iostream>
+#include <chrono>
+#include <ctime>
+#define TRUE 1 // setting the true value 1
+
+
+
+using namespace std;
+
+
+class AirTime {
+	int hrs, mins, sec;    //private data members
+
+public:
+	AirTime(int n1 = 0, int n2 = 0, int n3 = 0) :hrs(n1), mins(n2), sec(n3) {}
+
+	void setTime();                   //setting time function decleration
+	void disTime() const;             //display time function decleration
+	void standardTime();              //this will normalize time to standard form
+	//operator overloading 
+	AirTime operator-(const AirTime& deT);
+	AirTime operator+(const AirTime& deT);
+	bool operator < (const AirTime& arT);
+	AirTime operator ++ ();
+	AirTime operator --
+		();
+	bool operator>=(AirTime& deT);
+	AirTime operator+=(AirTime& deT);
+
+	/* AirTime operator-(AirTime& deT)    //+ function overloading
+	 {
+		 AirTime temp;
+
+		 temp.hrs = hrs - deT.hrs;
+		 temp.mins = mins - deT.mins;
+		 temp.sec = sec - deT.sec;
+		 standardTime(temp);
+		 return temp;
+
+	 }*/
+
+
+
+};
+//mian function 
+int main()
+{
+	AirTime arT, deT, flight, add, incri;  //objects of class AirTime i.e Arrival Time and Departure Time and Time of Flight
+
+	char choice, option;
+	bool temp;
+	do {
+		system("cls");
+		cout << " Welcome To PIA " << endl;
+		cout << " Set departure Time first !" << endl;
+		cout << " Press D to set departure Time " << endl;
+		cout << " Press A to set Arrival Time " << endl;
+		cout << " Press S to Show Time " << endl;
+		cout << " Press F to see time of Flight " << endl;
+		cout << " Press l to add both times " << endl;
+		cout << " Press i to increment Time " << endl;
+		cout << " Press p to check time status " << endl;
+		cout << " Press E to exit " << endl;
+
+		cin >> choice;
+		switch (choice)
+		{
+
+		case 'a':
+		case 'A':
+
+			cout << "  Set Arrival Time :" << endl;
+			arT.setTime();
+
+			system("pause");
+			break;
+		case 'd':
+		case 'D':
+
+			cout << " Set Departure Time :" << endl;
+			deT.setTime();
+
+			system("pause");
+
+			break;
+		case 's':
+		case 'S':
+
+
+			cout << " Arrival time is :"; arT.disTime();
+			cout << " Departure time is :"; deT.disTime();
+			system("pause");
+			break;
+		case 'e':
+		case 'E':
+
+			exit(-1);
+			break;
+		case 'f':
+		case 'F':
+
+			if (deT < arT)
+			{
+				flight = arT - deT;
+				cout << " Time of flight is :";
+				flight.disTime();
+			}
+			else {
+				cout << " Time error !" << endl;
+			}
+			system("pause");
+			break;
+		case 'l':
+		case 'L':
+			add = arT + deT;
+			add.disTime();
+			system("pause");
+			break;
+		case 'i':
+		case 'I':
+
+			cout << " Enter u to increment in Arrival Time :" << endl;
+			cout << " Enter v to increment in departure Time :" << endl;
+			cin >> option;
+			switch (option)
+			{
+			case 'u':
+				incri = ++deT;
+				incri.disTime();
+				system("pause");
+				break;
+			case 'v':
+				incri = ++arT;
+				incri.disTime();
+				system("pause");
+				break;
+			default:
+				cout << " Wrong user input " << endl;
+				break;
+
+			}
+			system("pause");
+			break;
+		case 'p':
+		case 'P':
+			if (arT >= deT)
+			{
+				cout << "Time is correct  " << endl;
+			}
+			else
+				cout << " time is incorrect" << endl;
+
+			system("pause");
+			break;
+		case 'k':
+		case 'K':
+			cout << " adding time using += " << endl;
+
+		}
+
+	} while (TRUE);
+
+}
+//Set time function that will take time from system
+void AirTime::setTime()
+{
+
+	/*struct tm newtime;
+	time_t now = time(0);
+	localtime_s(&newtime, &now);
+
+	hrs = newtime.tm_hour;
+	mins = newtime.tm_min;
+	sec = newtime.tm_sec;*/
+	while (true)
+	{
+		cout << " Enter Hours 1-12 :";
+		cin >> hrs;
+		if (hrs > 0 && hrs <= 12)
+		{
+			cout << " Enter minutes 0-60 :";
+			cin >> mins;
+			if (mins >= 0 && mins <= 60)
+			{
+				cout << " Enter seconds 0-60 :";
+				cin >> sec;
+				if (sec >= 0 && sec <= 60)
+				{
+					cout << "Time set! " << endl;
+					break;
+				}
+			}
+		}
+	}
+
+
+
+
+
+}
+//display time function 
+void AirTime::disTime() const
+{
+
+	cout << hrs << ":" << mins << ":" << sec << endl;
+
+}
+//normalize time after subtracting them
+void AirTime::standardTime()
+{
+	/* if (sec > 60)
+	 {
+		 mins += sec / 60;
+		 sec = sec % 60;
+	 }
+	 if (mins > 60)
+	 {
+		 hrs += mins / 60;
+		 mins = mins % 60;
+	 }
+	  if (hrs > 12)
+	 {
+		hrs=hrs%12;
+	 }*/
+
+	mins = mins + sec / 60;
+	sec = sec % 60;
+	hrs = hrs + mins / 60;
+	mins = mins % 60;
+
+
+}
+AirTime AirTime:: operator-(const AirTime& deT)    //+ function overloading
+{
+	AirTime temp;
+
+	temp.hrs = hrs - deT.hrs;
+	temp.mins = mins - deT.mins;
+	temp.sec = sec - deT.sec;
+	temp.standardTime();
+	return temp;
+
+}
+AirTime AirTime:: operator+(const AirTime& deT)    //+ function overloading
+{
+	AirTime temp;
+
+	temp.hrs = hrs + deT.hrs;
+	temp.mins = mins + deT.mins;
+	temp.sec = sec + deT.sec;
+	temp.standardTime();
+	return temp;
+
+}
+bool AirTime:: operator < (const AirTime& arT)
+{
+	AirTime temp;
+	if (temp.hrs < arT.hrs)
+		return true;
+	else if (temp.mins < arT.mins)
+		return true;
+	else if (temp.sec < arT.sec)
+		return true;
+	else
+		return false;
+}
+AirTime AirTime::operator++()
+{
+	hrs++;
+	mins++;
+	sec++;
+	return *this;
+
+}
+bool AirTime::operator>=(AirTime& deT)
+{
+	AirTime temp;
+	if (temp.hrs >= deT.hrs)
+		return true;
+	else if (temp.hrs == deT.hrs && temp.mins >= deT.mins)
+		return true;
+	else if (temp.hrs == deT.hrs && temp.mins == deT.mins && temp.sec >= deT.sec)
+		return true;
+	else
+		return false;
+
+}
+//AirTime AirTime::operator+=()
+/*#include <iostream>
+using namespace std;
+
+class Frac {
+private:
+	int a;
+	int b;
+
+public:
+	Frac() : a(0), b(0) {}
+
+	void in() {
+		cout << "Enter the numerator : ";
+		cin >> a;
+		cout << "Enter the denominator : ";
+		cin >> b;
+	}
+
+	// Overload the * operator
+	Frac operator * (const Frac& obj) {
+		Frac temp;
+		temp.a = a * obj.a;
+		temp.b = b * obj.b;
+
+		return temp;
+	}
+
+	void out() {
+		cout << "The fraction is  " << a << "/ " << b;
+	}
+};
+
+int main() {
+	Frac F1, F2, result;
+
+	cout << "Enter the first fraction:\n";
+	F1.in();
+
+	cout << "Enter the second fraction:\n";
+	F2.in();
+
+	// complex1 calls the operator function
+	// complex2 is passed as an argument to the function
+	result = F1 * F2;
+	result.out();
+
+	return 0;
+}
+
+
+
+#include <iostream>
+#include <time.h>
+#pragma warning(disable : 4996).
+using namespace std;
+int main()
+{
+	time_t ct = time(0);
+	string currenttime = ctime(&ct);
+	cout << " Time is :" << currenttime << endl;
+}
+*/
